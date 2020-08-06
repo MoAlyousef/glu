@@ -1,0 +1,17 @@
+[package]
+name = "glu"
+version = "0.1.0"
+authors = ["MoAlyousef <mohammed.alyousef@neurosrg.com>"]
+edition = "2018"
+description = "Safe GLU and GL Rust bindings"
+repository = "https://github.com/MoAlyousef/glu"
+documentation = "https://docs.rs/glu"
+keywords = ["bindings", "graphics"]
+categories = ["graphics"]
+readme = "README.md"
+license = "MIT"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+glu-sys = "0.1.4"
