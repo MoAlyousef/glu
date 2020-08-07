@@ -1,6 +1,7 @@
 use std::os::raw;
 
 pub type GLenum = raw::c_uint;
+pub type GLbitfield = raw::c_uint;
 
 pub fn ClearIndex(c: f32) {
     unsafe { glu_sys::glClearIndex(c) }
@@ -10,7 +11,7 @@ pub fn ClearColor(red: f32, green: f32, blue: f32, alpha: f32) {
     unsafe { glu_sys::glClearColor(red, green, blue, alpha) }
 }
 
-pub fn Clear(mask: u32) {
+pub fn Clear(mask: GLbitfield) {
     unsafe { glu_sys::glClear(mask) }
 }
 
@@ -142,7 +143,7 @@ pub fn GetIntegerv(pname: GLenum, params: &mut [i32]) {
     }
 }
 
-pub fn PushAttrib(mask: u32) {
+pub fn PushAttrib(mask: GLbitfield) {
     unsafe { glu_sys::glPushAttrib(mask) }
 }
 
@@ -150,7 +151,7 @@ pub fn PopAttrib() {
     unsafe { glu_sys::glPopAttrib() }
 }
 
-pub fn PushClientAttrib(mask: u32) {
+pub fn PushClientAttrib(mask: GLbitfield) {
     unsafe { glu_sys::glPushClientAttrib(mask) }
 }
 
@@ -309,8 +310,8 @@ pub fn CallList(list: u32) {
     unsafe { glu_sys::glCallList(list) }
 }
 
-pub unsafe fn glCallLists(n: i32, type_: GLenum, lists: *const raw::c_void) {
-    unsafe { glu_sys::glCallLists(n, type_, lists) }
+pub unsafe fn glCallLists(n: i32, typ: GLenum, lists: *const raw::c_void) {
+    unsafe { glu_sys::glCallLists(n, typ, lists) }
 }
 
 pub fn ListBase(base: u32) {
@@ -885,31 +886,31 @@ pub fn Rectsv(v1: &[i16], v2: &[i16]) {
     unsafe { glu_sys::glRectsv(v1.as_ptr(), v2.as_ptr()) }
 }
 
-pub fn VertexPointer(size: i32, type_: GLenum, stride: i32, ptr: *const raw::c_void) {
-    unsafe { glu_sys::glVertexPointer(size, type_, stride, ptr) }
+pub unsafe fn VertexPointer(size: i32, typ: GLenum, stride: i32, ptr: *const raw::c_void) {
+    unsafe { glu_sys::glVertexPointer(size, typ, stride, ptr) }
 }
 
-pub fn NormalPointer(type_: GLenum, stride: i32, ptr: *const raw::c_void) {
-    unsafe { glu_sys::glNormalPointer(type_, stride, ptr) }
+pub unsafe fn NormalPointer(typ: GLenum, stride: i32, ptr: *const raw::c_void) {
+    unsafe { glu_sys::glNormalPointer(typ, stride, ptr) }
 }
 
-pub fn ColorPointer(size: i32, type_: GLenum, stride: i32, ptr: *const raw::c_void) {
-    unsafe { glu_sys::glColorPointer(size, type_, stride, ptr) }
+pub unsafe fn ColorPointer(size: i32, typ: GLenum, stride: i32, ptr: *const raw::c_void) {
+    unsafe { glu_sys::glColorPointer(size, typ, stride, ptr) }
 }
 
-pub fn IndexPointer(type_: GLenum, stride: i32, ptr: *const raw::c_void) {
-    unsafe { glu_sys::glIndexPointer(type_, stride, ptr) }
+pub unsafe fn IndexPointer(typ: GLenum, stride: i32, ptr: *const raw::c_void) {
+    unsafe { glu_sys::glIndexPointer(typ, stride, ptr) }
 }
 
-pub fn TexCoordPointer(size: i32, type_: GLenum, stride: i32, ptr: *const raw::c_void) {
-    unsafe { glu_sys::glTexCoordPointer(size, type_, stride, ptr) }
+pub unsafe fn TexCoordPointer(size: i32, typ: GLenum, stride: i32, ptr: *const raw::c_void) {
+    unsafe { glu_sys::glTexCoordPointer(size, typ, stride, ptr) }
 }
 
-pub fn EdgeFlagPointer(stride: i32, ptr: *const raw::c_void) {
+pub unsafe fn EdgeFlagPointer(stride: i32, ptr: *const raw::c_void) {
     unsafe { glu_sys::glEdgeFlagPointer(stride, ptr) }
 }
 
-pub fn GetPointerv(pname: GLenum, params: *mut *mut raw::c_void) {
+pub unsafe fn GetPointerv(pname: GLenum, params: *mut *mut raw::c_void) {
     unsafe { glu_sys::glGetPointerv(pname, params) }
 }
 
@@ -921,11 +922,11 @@ pub fn DrawArrays(mode: GLenum, first: i32, count: i32) {
     unsafe { glu_sys::glDrawArrays(mode, first, count) }
 }
 
-pub fn DrawElements(mode: GLenum, count: i32, type_: GLenum, indices: *const raw::c_void) {
-    unsafe { glu_sys::glDrawElements(mode, count, type_, indices) }
+pub unsafe fn DrawElements(mode: GLenum, count: i32, typ: GLenum, indices: *const raw::c_void) {
+    unsafe { glu_sys::glDrawElements(mode, count, typ, indices) }
 }
 
-pub fn i32erleavedArrays(format: u32, stride: i32, pointer: *const raw::c_void) {
+pub unsafe fn interleavedArrays(format: u32, stride: i32, pointer: *const raw::c_void) {
     unsafe { glu_sys::glInterleavedArrays(format, stride, pointer) }
 }
 
@@ -1071,37 +1072,37 @@ pub fn Bitmap(
     unsafe { glu_sys::glBitmap(width, height, xorig, yorig, xmove, ymove, bitmap.as_ptr()) }
 }
 
-pub fn ReadPixels(
+pub unsafe fn ReadPixels(
     x: i32,
     y: i32,
     width: i32,
     height: i32,
     format: u32,
-    type_: GLenum,
+    typ: GLenum,
     pixels: *mut raw::c_void,
 ) {
-    unsafe { glu_sys::glReadPixels(x, y, width, height, format, type_, pixels) }
+    unsafe { glu_sys::glReadPixels(x, y, width, height, format, typ, pixels) }
 }
 
-pub fn DrawPixels(
+pub unsafe fn DrawPixels(
     width: i32,
     height: i32,
     format: u32,
-    type_: GLenum,
+    typ: GLenum,
     pixels: *const raw::c_void,
 ) {
-    unsafe { glu_sys::glDrawPixels(width, height, format, type_, pixels) }
+    unsafe { glu_sys::glDrawPixels(width, height, format, typ, pixels) }
 }
 
-pub fn CopyPixels(x: i32, y: i32, width: i32, height: i32, type_: GLenum) {
-    unsafe { glu_sys::glCopyPixels(x, y, width, height, type_) }
+pub fn CopyPixels(x: i32, y: i32, width: i32, height: i32, typ: GLenum) {
+    unsafe { glu_sys::glCopyPixels(x, y, width, height, typ) }
 }
 
-pub fn StencilFunc(func: u32, ref_: i32, mask: u32) {
-    unsafe { glu_sys::glStencilFunc(func, ref_, mask) }
+pub fn StencilFunc(func: u32, reference: i32, mask: GLbitfield) {
+    unsafe { glu_sys::glStencilFunc(func, reference, mask) }
 }
 
-pub fn StencilMask(mask: u32) {
+pub fn StencilMask(mask: GLbitfield) {
     unsafe { glu_sys::glStencilMask(mask) }
 }
 
@@ -1223,14 +1224,14 @@ pub fn GetTexLevelParameteriv(target: GLenum, level: i32, pname: GLenum, params:
     }
 }
 
-pub fn TexImage1D(
+pub unsafe fn TexImage1D(
     target: GLenum,
     level: i32,
     internalFormat: i32,
     width: i32,
     border: i32,
     format: u32,
-    type_: GLenum,
+    typ: GLenum,
     pixels: *const raw::c_void,
 ) {
     unsafe {
@@ -1241,13 +1242,13 @@ pub fn TexImage1D(
             width,
             border,
             format,
-            type_,
+            typ,
             pixels,
         )
     }
 }
 
-pub fn TexImage2D(
+pub unsafe fn TexImage2D(
     target: GLenum,
     level: i32,
     internalFormat: i32,
@@ -1255,7 +1256,7 @@ pub fn TexImage2D(
     height: i32,
     border: i32,
     format: u32,
-    type_: GLenum,
+    typ: GLenum,
     pixels: *const raw::c_void,
 ) {
     unsafe {
@@ -1267,20 +1268,20 @@ pub fn TexImage2D(
             height,
             border,
             format,
-            type_,
+            typ,
             pixels,
         )
     }
 }
 
-pub fn GetTexImage(
+pub unsafe fn GetTexImage(
     target: GLenum,
     level: i32,
     format: u32,
-    type_: GLenum,
+    typ: GLenum,
     pixels: *mut raw::c_void,
 ) {
-    unsafe { glu_sys::glGetTexImage(target, level, format, type_, pixels) }
+    unsafe { glu_sys::glGetTexImage(target, level, format, typ, pixels) }
 }
 
 pub fn GenTextures(n: i32, textures: &mut [u32]) {
@@ -1311,19 +1312,19 @@ pub fn IsTexture(texture: GLenum) -> bool {
     unsafe { glu_sys::glIsTexture(texture) != 0 }
 }
 
-pub fn TexSubImage1D(
+pub unsafe fn TexSubImage1D(
     target: GLenum,
     level: i32,
     xoffset: i32,
     width: i32,
     format: u32,
-    type_: GLenum,
+    typ: GLenum,
     pixels: *const raw::c_void,
 ) {
-    unsafe { glu_sys::glTexSubImage1D(target, level, xoffset, width, format, type_, pixels) }
+    unsafe { glu_sys::glTexSubImage1D(target, level, xoffset, width, format, typ, pixels) }
 }
 
-pub fn TexSubImage2D(
+pub unsafe fn TexSubImage2D(
     target: GLenum,
     level: i32,
     xoffset: i32,
@@ -1331,12 +1332,12 @@ pub fn TexSubImage2D(
     width: i32,
     height: i32,
     format: u32,
-    type_: GLenum,
+    typ: GLenum,
     pixels: *const raw::c_void,
 ) {
     unsafe {
         glu_sys::glTexSubImage2D(
-            target, level, xoffset, yoffset, width, height, format, type_, pixels,
+            target, level, xoffset, yoffset, width, height, format, typ, pixels,
         )
     }
 }
@@ -1545,9 +1546,9 @@ pub fn Fogiv(pname: GLenum, params: &[i32]) {
     unsafe { glu_sys::glFogiv(pname, params.as_ptr()) }
 }
 
-pub fn FeedbackBuffer(size: i32, type_: GLenum, buffer: &mut [f32]) {
+pub fn FeedbackBuffer(size: i32, typ: GLenum, buffer: &mut [f32]) {
     unsafe {
-        glu_sys::glFeedbackBuffer(size, type_, buffer.as_mut_ptr());
+        glu_sys::glFeedbackBuffer(size, typ, buffer.as_mut_ptr());
     }
 }
 
@@ -1577,18 +1578,18 @@ pub fn PopName() {
     unsafe { glu_sys::glPopName() }
 }
 
-pub fn DrawRangeElements(
+pub unsafe fn DrawRangeElements(
     mode: GLenum,
     start: u32,
     end: u32,
     count: i32,
-    type_: GLenum,
+    typ: GLenum,
     indices: *const raw::c_void,
 ) {
-    unsafe { glu_sys::glDrawRangeElements(mode, start, end, count, type_, indices) }
+    unsafe { glu_sys::glDrawRangeElements(mode, start, end, count, typ, indices) }
 }
 
-pub fn TexImage3D(
+pub unsafe fn TexImage3D(
     target: GLenum,
     level: i32,
     internalFormat: i32,
@@ -1597,7 +1598,7 @@ pub fn TexImage3D(
     depth: i32,
     border: i32,
     format: u32,
-    type_: GLenum,
+    typ: GLenum,
     pixels: *const raw::c_void,
 ) {
     unsafe {
@@ -1610,13 +1611,13 @@ pub fn TexImage3D(
             depth,
             border,
             format,
-            type_,
+            typ,
             pixels,
         )
     }
 }
 
-pub fn TexSubImage3D(
+pub unsafe fn TexSubImage3D(
     target: GLenum,
     level: i32,
     xoffset: i32,
@@ -1626,12 +1627,12 @@ pub fn TexSubImage3D(
     height: i32,
     depth: i32,
     format: u32,
-    type_: GLenum,
+    typ: GLenum,
     pixels: *const raw::c_void,
 ) {
     unsafe {
         glu_sys::glTexSubImage3D(
-            target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, pixels,
+            target, level, xoffset, yoffset, zoffset, width, height, depth, format, typ, pixels,
         )
     }
 }
@@ -1654,26 +1655,26 @@ pub fn CopyTexSubImage3D(
     }
 }
 
-pub fn ColorTable(
+pub unsafe fn ColorTable(
     target: GLenum,
     internalformat: GLenum,
     width: i32,
     format: u32,
-    type_: GLenum,
+    typ: GLenum,
     table: *const raw::c_void,
 ) {
-    unsafe { glu_sys::glColorTable(target, internalformat, width, format, type_, table) }
+    unsafe { glu_sys::glColorTable(target, internalformat, width, format, typ, table) }
 }
 
-pub fn ColorSubTable(
+pub unsafe fn ColorSubTable(
     target: GLenum,
     start: i32,
     count: i32,
     format: u32,
-    type_: GLenum,
+    typ: GLenum,
     data: *const raw::c_void,
 ) {
-    unsafe { glu_sys::glColorSubTable(target, start, count, format, type_, data) }
+    unsafe { glu_sys::glColorSubTable(target, start, count, format, typ, data) }
 }
 
 pub fn ColorTableParameteriv(target: GLenum, pname: GLenum, params: &[i32]) {
@@ -1692,8 +1693,8 @@ pub fn CopyColorTable(target: GLenum, internalformat: GLenum, x: i32, y: i32, wi
     unsafe { glu_sys::glCopyColorTable(target, internalformat, x, y, width) }
 }
 
-pub fn GetColorTable(target: GLenum, format: u32, type_: GLenum, table: *mut raw::c_void) {
-    unsafe { glu_sys::glGetColorTable(target, format, type_, table) }
+pub unsafe fn GetColorTable(target: GLenum, format: u32, typ: GLenum, table: *mut raw::c_void) {
+    unsafe { glu_sys::glGetColorTable(target, format, typ, table) }
 }
 
 pub fn GetColorTableParameterfv(target: GLenum, pname: GLenum, params: &mut [f32]) {
@@ -1724,14 +1725,14 @@ pub fn ResetHistogram(target: GLenum) {
     unsafe { glu_sys::glResetHistogram(target) }
 }
 
-pub fn GetHistogram(
+pub unsafe fn GetHistogram(
     target: GLenum,
     reset: bool,
     format: u32,
-    type_: GLenum,
+    typ: GLenum,
     values: *mut raw::c_void,
 ) {
-    unsafe { glu_sys::glGetHistogram(target, reset as u8, format, type_, values) }
+    unsafe { glu_sys::glGetHistogram(target, reset as u8, format, typ, values) }
 }
 
 pub fn GetHistogramParameterfv(target: GLenum, pname: GLenum, params: &mut [f32]){
@@ -1754,7 +1755,7 @@ pub fn ResetMinmax(target: GLenum) {
     unsafe { glu_sys::glResetMinmax(target) }
 }
 
-pub fn GetMinmax(target: GLenum, reset: bool, format: u32, types: u32, values: *mut raw::c_void) {
+pub unsafe fn GetMinmax(target: GLenum, reset: bool, format: u32, types: u32, values: *mut raw::c_void) {
     unsafe { glu_sys::glGetMinmax(target, reset as u8, format, types, values) }
 }
 
@@ -1770,28 +1771,28 @@ pub fn GetMinmaxParameteriv(target: GLenum, pname: GLenum, params: &mut [i32]) {
     }
 }
 
-pub fn ConvolutionFilter1D(
+pub unsafe fn ConvolutionFilter1D(
     target: GLenum,
     internalformat: GLenum,
     width: i32,
     format: u32,
-    type_: GLenum,
+    typ: GLenum,
     image: *const raw::c_void,
 ) {
-    unsafe { glu_sys::glConvolutionFilter1D(target, internalformat, width, format, type_, image) }
+    unsafe { glu_sys::glConvolutionFilter1D(target, internalformat, width, format, typ, image) }
 }
 
-pub fn ConvolutionFilter2D(
+pub unsafe fn ConvolutionFilter2D(
     target: GLenum,
     internalformat: GLenum,
     width: i32,
     height: i32,
     format: u32,
-    type_: GLenum,
+    typ: GLenum,
     image: *const raw::c_void,
 ) {
     unsafe {
-        glu_sys::glConvolutionFilter2D(target, internalformat, width, height, format, type_, image)
+        glu_sys::glConvolutionFilter2D(target, internalformat, width, height, format, typ, image)
     }
 }
 
@@ -1832,8 +1833,8 @@ pub fn CopyConvolutionFilter2D(
     unsafe { glu_sys::glCopyConvolutionFilter2D(target, internalformat, x, y, width, height) }
 }
 
-pub fn GetConvolutionFilter(target: GLenum, format: u32, type_: GLenum, image: *mut raw::c_void) {
-    unsafe { glu_sys::glGetConvolutionFilter(target, format, type_, image) }
+pub unsafe fn GetConvolutionFilter(target: GLenum, format: u32, typ: GLenum, image: *mut raw::c_void) {
+    unsafe { glu_sys::glGetConvolutionFilter(target, format, typ, image) }
 }
 
 pub fn GetConvolutionParameterfv(target: GLenum, pname: GLenum, params: &mut [f32]) {
@@ -1848,13 +1849,13 @@ pub fn GetConvolutionParameteriv(target: GLenum, pname: GLenum, params: &mut [i3
     }
 }
 
-pub fn SeparableFilter2D(
+pub unsafe fn SeparableFilter2D(
     target: GLenum,
     internalformat: GLenum,
     width: i32,
     height: i32,
     format: u32,
-    type_: GLenum,
+    typ: GLenum,
     row: *const raw::c_void,
     column: *const raw::c_void,
 ) {
@@ -1865,22 +1866,22 @@ pub fn SeparableFilter2D(
             width,
             height,
             format,
-            type_,
+            typ,
             row,
             column,
         )
     }
 }
 
-pub fn GetSeparableFilter(
+pub unsafe fn GetSeparableFilter(
     target: GLenum,
     format: u32,
-    type_: GLenum,
+    typ: GLenum,
     row: *mut raw::c_void,
     column: *mut raw::c_void,
     span: *mut raw::c_void,
 ) {
-    unsafe { glu_sys::glGetSeparableFilter(target, format, type_, row, column, span) }
+    unsafe { glu_sys::glGetSeparableFilter(target, format, typ, row, column, span) }
 }
 
 pub fn ActiveTexture(texture: GLenum) {
@@ -1891,7 +1892,7 @@ pub fn ClientActiveTexture(texture: GLenum) {
     unsafe { glu_sys::glClientActiveTexture(texture) }
 }
 
-pub fn CompressedTexImage1D(
+pub unsafe fn CompressedTexImage1D(
     target: GLenum,
     level: i32,
     internalformat: GLenum,
@@ -1913,7 +1914,7 @@ pub fn CompressedTexImage1D(
     }
 }
 
-pub fn CompressedTexImage2D(
+pub unsafe fn CompressedTexImage2D(
     target: GLenum,
     level: i32,
     internalformat: GLenum,
@@ -1937,7 +1938,7 @@ pub fn CompressedTexImage2D(
     }
 }
 
-pub fn CompressedTexImage3D(
+pub unsafe fn CompressedTexImage3D(
     target: GLenum,
     level: i32,
     internalformat: GLenum,
@@ -1963,7 +1964,7 @@ pub fn CompressedTexImage3D(
     }
 }
 
-pub fn CompressedTexSubImage1D(
+pub unsafe fn CompressedTexSubImage1D(
     target: GLenum,
     level: i32,
     xoffset: i32,
@@ -1977,7 +1978,7 @@ pub fn CompressedTexSubImage1D(
     }
 }
 
-pub fn CompressedTexSubImage2D(
+pub unsafe fn CompressedTexSubImage2D(
     target: GLenum,
     level: i32,
     xoffset: i32,
@@ -1995,7 +1996,7 @@ pub fn CompressedTexSubImage2D(
     }
 }
 
-pub fn CompressedTexSubImage3D(
+pub unsafe fn CompressedTexSubImage3D(
     target: GLenum,
     level: i32,
     xoffset: i32,
@@ -2015,7 +2016,7 @@ pub fn CompressedTexSubImage3D(
     }
 }
 
-pub fn GetCompressedTexImage(target: GLenum, lod: i32, img: *mut raw::c_void) {
+pub unsafe fn GetCompressedTexImage(target: GLenum, lod: i32, img: *mut raw::c_void) {
     unsafe { glu_sys::glGetCompressedTexImage(target, lod, img) }
 }
 

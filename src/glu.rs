@@ -30,12 +30,12 @@ pub fn BeginTrim(nurb: &mut Nurbs) {
     unsafe { glu_sys::gluBeginTrim(nurb._inner) }
 }
 
-pub fn Build1DMipmapLevels(
+pub unsafe fn Build1DMipmapLevels(
     target: GLenum,
     internalFormat: i32,
     width: i32,
     format: GLenum,
-    type_: GLenum,
+    typ: GLenum,
     level: i32,
     base: i32,
     max: i32,
@@ -47,7 +47,7 @@ pub fn Build1DMipmapLevels(
             internalFormat,
             width,
             format,
-            type_,
+            typ,
             level,
             base,
             max,
@@ -56,24 +56,24 @@ pub fn Build1DMipmapLevels(
     }
 }
 
-pub fn Build1DMipmaps(
+pub unsafe fn Build1DMipmaps(
     target: GLenum,
     internalFormat: i32,
     width: i32,
     format: GLenum,
-    type_: GLenum,
+    typ: GLenum,
     data: *const raw::c_void,
 ) -> i32 {
-    unsafe { glu_sys::gluBuild1DMipmaps(target, internalFormat, width, format, type_, data) }
+    unsafe { glu_sys::gluBuild1DMipmaps(target, internalFormat, width, format, typ, data) }
 }
 
-pub fn Build2DMipmapLevels(
+pub unsafe fn Build2DMipmapLevels(
     target: GLenum,
     internalFormat: i32,
     width: i32,
     height: i32,
     format: GLenum,
-    type_: GLenum,
+    typ: GLenum,
     level: i32,
     base: i32,
     max: i32,
@@ -86,7 +86,7 @@ pub fn Build2DMipmapLevels(
             width,
             height,
             format,
-            type_,
+            typ,
             level,
             base,
             max,
@@ -95,28 +95,28 @@ pub fn Build2DMipmapLevels(
     }
 }
 
-pub fn Build2DMipmaps(
+pub unsafe fn Build2DMipmaps(
     target: GLenum,
     internalFormat: i32,
     width: i32,
     height: i32,
     format: GLenum,
-    type_: GLenum,
+    typ: GLenum,
     data: *const raw::c_void,
 ) -> i32 {
     unsafe {
-        glu_sys::gluBuild2DMipmaps(target, internalFormat, width, height, format, type_, data)
+        glu_sys::gluBuild2DMipmaps(target, internalFormat, width, height, format, typ, data)
     }
 }
 
-pub fn Build3DMipmapLevels(
+pub unsafe fn Build3DMipmapLevels(
     target: GLenum,
     internalFormat: i32,
     width: i32,
     height: i32,
     depth: i32,
     format: GLenum,
-    type_: GLenum,
+    typ: GLenum,
     level: i32,
     base: i32,
     max: i32,
@@ -130,7 +130,7 @@ pub fn Build3DMipmapLevels(
             height,
             depth,
             format,
-            type_,
+            typ,
             level,
             base,
             max,
@@ -139,14 +139,14 @@ pub fn Build3DMipmapLevels(
     }
 }
 
-pub fn Build3DMipmaps(
+pub unsafe fn Build3DMipmaps(
     target: GLenum,
     internalFormat: i32,
     width: i32,
     height: i32,
     depth: i32,
     format: GLenum,
-    type_: GLenum,
+    typ: GLenum,
     data: *const raw::c_void,
 ) -> i32 {
     unsafe {
@@ -157,7 +157,7 @@ pub fn Build3DMipmaps(
             height,
             depth,
             format,
-            type_,
+            typ,
             data,
         )
     }
@@ -301,19 +301,19 @@ pub fn NewTess() -> Tesselator {
     }
 }
 
-pub fn NextContour(tess: &mut Tesselator, type_: GLenum) {
-    unsafe { glu_sys::gluNextContour(tess._inner, type_) }
+pub fn NextContour(tess: &mut Tesselator, typ: GLenum) {
+    unsafe { glu_sys::gluNextContour(tess._inner, typ) }
 }
 
 pub fn NurbsCallback(nurb: &mut Nurbs, which: GLenum, CallBackFunc: Option<fn()>) {
     unsafe { glu_sys::gluNurbsCallback(nurb._inner, which, std::mem::transmute(CallBackFunc)) }
 }
 
-pub fn NurbsCallbackData(nurb: &mut Nurbs, userData: *mut raw::c_void) {
+pub unsafe fn NurbsCallbackData(nurb: &mut Nurbs, userData: *mut raw::c_void) {
     unsafe { glu_sys::gluNurbsCallbackData(nurb._inner, userData) }
 }
 
-pub fn NurbsCallbackDataEXT(nurb: &mut Nurbs, userData: *mut raw::c_void) {
+pub unsafe fn NurbsCallbackDataEXT(nurb: &mut Nurbs, userData: *mut raw::c_void) {
     unsafe { glu_sys::gluNurbsCallbackDataEXT(nurb._inner, userData) }
 }
 
@@ -323,9 +323,11 @@ pub fn NurbsCurve(
     stride: i32,
     control: &mut [f32],
     order: i32,
-    type_: GLenum,
+    typ: GLenum,
 ) {
+    debug_assert!(knots.len() <= std::i32::MAX as usize);
     unsafe {
+        debug_assert!(knots.len() <= std::i32::MAX as usize);
         glu_sys::gluNurbsCurve(
             nurb._inner,
             knots.len() as i32,
@@ -333,7 +335,7 @@ pub fn NurbsCurve(
             stride,
             control.as_mut_ptr(),
             order,
-            type_,
+            typ,
         )
     }
 }
@@ -351,9 +353,11 @@ pub fn NurbsSurface(
     control: &mut [f32],
     sOrder: i32,
     tOrder: i32,
-    type_: GLenum,
+    typ: GLenum,
 ) {
     unsafe {
+        debug_assert!(sKnots.len() <= std::i32::MAX as usize);
+        debug_assert!(tKnots.len() <= std::i32::MAX as usize);
         glu_sys::gluNurbsSurface(
             nurb._inner,
             sKnots.len() as i32,
@@ -365,7 +369,7 @@ pub fn NurbsSurface(
             control.as_mut_ptr(),
             sOrder,
             tOrder,
-            type_,
+            typ,
         )
     }
 }
@@ -422,14 +426,15 @@ pub fn Project(
     }
 }
 
-pub fn PwlCurve(nurb: &mut Nurbs, data: &mut [f32], stride: i32, type_: GLenum) {
+pub fn PwlCurve(nurb: &mut Nurbs, data: &mut [f32], stride: i32, typ: GLenum) {
     unsafe {
+        debug_assert!(data.len() <= std::i32::MAX as usize);
         glu_sys::gluPwlCurve(
             nurb._inner,
             data.len() as i32,
             data.as_mut_ptr(),
             stride,
-            type_,
+            typ,
         )
     }
 }
@@ -454,7 +459,7 @@ pub fn QuadricTexture(quad: &mut Quadric, texture: bool) {
     unsafe { glu_sys::gluQuadricTexture(quad._inner, texture as u8) }
 }
 
-pub fn ScaleImage(
+pub unsafe fn ScaleImage(
     format: GLenum,
     wIn: i32,
     hIn: i32,
@@ -480,7 +485,7 @@ pub fn TessBeginContour(tess: &mut Tesselator) {
     unsafe { glu_sys::gluTessBeginContour(tess._inner) }
 }
 
-pub fn TessBeginPolygon(tess: &mut Tesselator, data: *mut raw::c_void) {
+pub unsafe fn TessBeginPolygon(tess: &mut Tesselator, data: *mut raw::c_void) {
     unsafe { glu_sys::gluTessBeginPolygon(tess._inner, data) }
 }
 
@@ -504,7 +509,7 @@ pub fn TessProperty(tess: &mut Tesselator, which: GLenum, data: f64) {
     unsafe { glu_sys::gluTessProperty(tess._inner, which, data) }
 }
 
-pub fn TessVertex(tess: &mut Tesselator, location: &mut [f64], data: *mut raw::c_void) {
+pub unsafe fn TessVertex(tess: &mut Tesselator, location: &mut [f64], data: *mut raw::c_void) {
     unsafe { glu_sys::gluTessVertex(tess._inner, location.as_mut_ptr(), data) }
 }
 
