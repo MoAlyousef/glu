@@ -66,11 +66,9 @@ pub fn PolygonStipple(mask: &[u8; 32 * 32]) {
     unsafe { glu_sys::glPolygonStipple(mask.as_ptr()) }
 }
 
-pub fn GetPolygonStipple() -> Vec<u8> {
+pub fn GetPolygonStipple(mask: &mut [u8; 32 * 32]) {
     unsafe {
-        let mut temp: Vec<u8> = Vec::with_capacity(32 * 32);
-        glu_sys::glGetPolygonStipple(temp.as_mut_ptr());
-        temp
+        glu_sys::glGetPolygonStipple(mask.as_mut_ptr());
     }
 }
 
@@ -86,11 +84,9 @@ pub fn ClipPlane(plane: u32, equation: &[f64; 4]) {
     unsafe { glu_sys::glClipPlane(plane, equation.as_ptr()) }
 }
 
-pub fn GetClipPlane(plane: u32) -> Vec<f64> {
+pub fn GetClipPlane(plane: u32, equation: &mut [f64; 4]) {
     unsafe {
-        let mut temp = Vec::with_capacity(4);
-        glu_sys::glGetClipPlane(plane, temp.as_mut_ptr());
-        temp
+        glu_sys::glGetClipPlane(plane, equation.as_mut_ptr());
     }
 }
 
@@ -122,35 +118,27 @@ pub fn DisableClientState(cap: u32) {
     unsafe { glu_sys::glDisableClientState(cap) }
 }
 
-pub fn GetBooleanv(pname: GLenum) -> Vec<bool> {
+pub fn GetBooleanv(pname: GLenum, params: &mut [bool]) {
     unsafe {
-        let mut params: Vec<u8> = vec![];
-        glu_sys::glGetBooleanv(pname, params.as_mut_ptr());
-        std::mem::transmute(params)
+        glu_sys::glGetBooleanv(pname, params.as_mut_ptr() as *mut u8);
     }
 }
 
-pub fn GetDoublev(pname: GLenum) -> Vec<f64> {
+pub fn GetDoublev(pname: GLenum, params: &mut [f64]) {
     unsafe {
-        let mut params: Vec<f64> = vec![];
         glu_sys::glGetDoublev(pname, params.as_mut_ptr());
-        params
     }
 }
 
-pub fn GetFloatv(pname: GLenum) -> Vec<f32> {
+pub fn GetFloatv(pname: GLenum, params: &mut [f32]) {
     unsafe {
-        let mut params: Vec<f32> = vec![];
         glu_sys::glGetFloatv(pname, params.as_mut_ptr());
-        params
     }
 }
 
-pub fn GetIntegerv(pname: GLenum) -> Vec<i32> {
+pub fn GetIntegerv(pname: GLenum, params: &mut [i32]) {
     unsafe {
-        let mut params: Vec<i32> = vec![];
         glu_sys::glGetIntegerv(pname, params.as_mut_ptr());
-        params
     }
 }
 
@@ -961,19 +949,15 @@ pub fn Lightiv(light: GLenum, pname: GLenum, params: &[i32]) {
     unsafe { glu_sys::glLightiv(light, pname, params.as_ptr()) }
 }
 
-pub fn GetLightfv(light: GLenum, pname: GLenum) -> Vec<f32> {
+pub fn GetLightfv(light: GLenum, pname: GLenum, params: &mut [f32]) {
     unsafe {
-        let mut params: Vec<f32> = vec![];
         glu_sys::glGetLightfv(light, pname, params.as_mut_ptr());
-        params
     }
 }
 
-pub fn GetLightiv(light: GLenum, pname: GLenum) -> Vec<i32> {
+pub fn GetLightiv(light: GLenum, pname: GLenum, params: &mut [i32])  {
     unsafe {
-        let mut params: Vec<i32> = vec![];
         glu_sys::glGetLightiv(light, pname, params.as_mut_ptr());
-        params
     }
 }
 
@@ -1009,19 +993,15 @@ pub fn Materialiv(face: GLenum, pname: GLenum, params: &[i32]) {
     unsafe { glu_sys::glMaterialiv(face, pname, params.as_ptr()) }
 }
 
-pub fn GetMaterialfv(face: GLenum, pname: GLenum) -> Vec<f32> {
+pub fn GetMaterialfv(face: GLenum, pname: GLenum, params: &mut [f32]) {
     unsafe {
-        let mut params: Vec<f32> = vec![];
         glu_sys::glGetMaterialfv(face, pname, params.as_mut_ptr());
-        params
     }
 }
 
-pub fn GetMaterialiv(face: GLenum, pname: GLenum) -> Vec<i32> {
+pub fn GetMaterialiv(face: GLenum, pname: GLenum, params: &mut [i32]) {
     unsafe {
-        let mut params: Vec<i32> = vec![];
         glu_sys::glGetMaterialiv(face, pname, params.as_mut_ptr());
-        params
     }
 }
 
@@ -1061,27 +1041,21 @@ pub fn PixelMapusv(map: GLenum, mapsize: i32, values: &[u16]) {
     unsafe { glu_sys::glPixelMapusv(map, mapsize, values.as_ptr()) }
 }
 
-pub fn GetPixelMapfv(map: GLenum) -> Vec<f32> {
+pub fn GetPixelMapfv(map: GLenum, values: &mut [f32]) {
     unsafe {
-        let mut values: Vec<f32> = vec![];
         glu_sys::glGetPixelMapfv(map, values.as_mut_ptr());
-        values
     }
 }
 
-pub fn GetPixelMapuiv(map: GLenum) -> Vec<u32> {
+pub fn GetPixelMapuiv(map: GLenum, values: &mut [u32]) {
     unsafe {
-        let mut values: Vec<u32> = vec![];
         glu_sys::glGetPixelMapuiv(map, values.as_mut_ptr());
-        values
     }
 }
 
-pub fn GetPixelMapusv(map: GLenum) -> Vec<u16> {
+pub fn GetPixelMapusv(map: GLenum, values: &mut [u16])  {
     unsafe {
-        let mut values: Vec<u16> = vec![];
         glu_sys::glGetPixelMapusv(map, values.as_mut_ptr());
-        values
     }
 }
 
@@ -1163,27 +1137,21 @@ pub fn TexGeniv(coord: GLenum, pname: GLenum, params: &[i32]) {
     unsafe { glu_sys::glTexGeniv(coord, pname, params.as_ptr()) }
 }
 
-pub fn GetTexGendv(coord: GLenum, pname: GLenum) -> Vec<f64> {
+pub fn GetTexGendv(coord: GLenum, pname: GLenum, params: &mut [f64]) {
     unsafe {
-        let mut params = vec![];
         glu_sys::glGetTexGendv(coord, pname, params.as_mut_ptr());
-        params
     }
 }
 
-pub fn GetTexGenfv(coord: GLenum, pname: GLenum) -> Vec<f32> {
+pub fn GetTexGenfv(coord: GLenum, pname: GLenum, params: &mut [f32]) {
     unsafe {
-        let mut params = vec![];
         glu_sys::glGetTexGenfv(coord, pname, params.as_mut_ptr());
-        params
     }
 }
 
-pub fn GetTexGeniv(coord: GLenum, pname: GLenum) -> Vec<i32> {
+pub fn GetTexGeniv(coord: GLenum, pname: GLenum, params: &mut [i32]) {
     unsafe {
-        let mut params = vec![];
         glu_sys::glGetTexGeniv(coord, pname, params.as_mut_ptr());
-        params
     }
 }
 
@@ -1203,19 +1171,15 @@ pub fn TexEnviv(target: GLenum, pname: GLenum, params: &[i32]) {
     unsafe { glu_sys::glTexEnviv(target, pname, params.as_ptr()) }
 }
 
-pub fn GetTexEnvfv(target: GLenum, pname: GLenum) -> Vec<f32> {
+pub fn GetTexEnvfv(target: GLenum, pname: GLenum, params: &mut [f32]) {
     unsafe {
-        let mut params = vec![];
         glu_sys::glGetTexEnvfv(target, pname, params.as_mut_ptr());
-        params
     }
 }
 
-pub fn GetTexEnviv(target: GLenum, pname: GLenum) -> Vec<i32> {
+pub fn GetTexEnviv(target: GLenum, pname: GLenum, params: &mut [i32]){
     unsafe {
-        let mut params = vec![];
         glu_sys::glGetTexEnviv(target, pname, params.as_mut_ptr());
-        params
     }
 }
 
@@ -1235,35 +1199,27 @@ pub fn TexParameteriv(target: GLenum, pname: GLenum, params: &[i32]) {
     unsafe { glu_sys::glTexParameteriv(target, pname, params.as_ptr()) }
 }
 
-pub fn GetTexParameterfv(target: GLenum, pname: GLenum) -> Vec<f32> {
+pub fn GetTexParameterfv(target: GLenum, pname: GLenum, params: &mut [f32]) {
     unsafe {
-        let mut params = vec![];
         glu_sys::glGetTexParameterfv(target, pname, params.as_mut_ptr());
-        params
     }
 }
 
-pub fn GetTexParameteriv(target: GLenum, pname: GLenum) -> Vec<i32> {
+pub fn GetTexParameteriv(target: GLenum, pname: GLenum, params: &mut [i32]) {
     unsafe {
-        let mut params = vec![];
         glu_sys::glGetTexParameteriv(target, pname, params.as_mut_ptr());
-        params
     }
 }
 
-pub fn GetTexLevelParameterfv(target: GLenum, level: i32, pname: GLenum) -> Vec<f32> {
+pub fn GetTexLevelParameterfv(target: GLenum, level: i32, pname: GLenum, params: &mut [f32]) {
     unsafe {
-        let mut params = vec![];
         glu_sys::glGetTexLevelParameterfv(target, level, pname, params.as_mut_ptr());
-        params
     }
 }
 
-pub fn GetTexLevelParameteriv(target: GLenum, level: i32, pname: GLenum) -> Vec<i32> {
+pub fn GetTexLevelParameteriv(target: GLenum, level: i32, pname: GLenum, params: &mut [i32]) {
     unsafe {
-        let mut params = vec![];
         glu_sys::glGetTexLevelParameteriv(target, level, pname, params.as_mut_ptr());
-        params
     }
 }
 
@@ -1327,11 +1283,9 @@ pub fn GetTexImage(
     unsafe { glu_sys::glGetTexImage(target, level, format, type_, pixels) }
 }
 
-pub fn GenTextures(n: i32) -> Vec<u32> {
+pub fn GenTextures(n: i32, textures: &mut [u32]) {
     unsafe {
-        let mut textures = vec![];
         glu_sys::glGenTextures(n, textures.as_mut_ptr());
-        textures
     }
 }
 
@@ -1347,13 +1301,9 @@ pub fn PrioritizeTextures(n: i32, textures: &[u32], priorities: &[f32]) {
     unsafe { glu_sys::glPrioritizeTextures(n, textures.as_ptr(), priorities.as_ptr()) }
 }
 
-pub fn AreTexturesResident(n: i32, textures: &[u32]) -> (bool, Vec<bool>) {
+pub fn AreTexturesResident(n: i32, textures: &[u32], residences: &mut [bool]) -> bool {
     unsafe {
-        let mut residences = vec![];
-        let ret =
-            glu_sys::glAreTexturesResident(n, textures.as_ptr(), residences.as_mut_ptr()) != 0;
-        let v: Vec<bool> = std::mem::transmute(residences);
-        (ret, v)
+        glu_sys::glAreTexturesResident(n, textures.as_ptr(), residences.as_mut_ptr() as *mut u8) != 0
     }
 }
 
@@ -1497,27 +1447,21 @@ pub fn Map2f(
     }
 }
 
-pub fn GetMapdv(target: GLenum, query: GLenum) -> Vec<f64> {
+pub fn GetMapdv(target: GLenum, query: GLenum, v: &mut [f64]) {
     unsafe {
-        let mut v = vec![];
         glu_sys::glGetMapdv(target, query, v.as_mut_ptr());
-        v
     }
 }
 
-pub fn GetMapfv(target: GLenum, query: GLenum) -> Vec<f32> {
+pub fn GetMapfv(target: GLenum, query: GLenum, v: &mut [f32]) {
     unsafe {
-        let mut v = vec![];
         glu_sys::glGetMapfv(target, query, v.as_mut_ptr());
-        v
     }
 }
 
-pub fn GetMapiv(target: GLenum, query: GLenum) -> Vec<i32> {
+pub fn GetMapiv(target: GLenum, query: GLenum, v: &mut [i32]) {
     unsafe {
-        let mut v = vec![];
         glu_sys::glGetMapiv(target, query, v.as_mut_ptr());
-        v
     }
 }
 
@@ -1601,11 +1545,9 @@ pub fn Fogiv(pname: GLenum, params: &[i32]) {
     unsafe { glu_sys::glFogiv(pname, params.as_ptr()) }
 }
 
-pub fn FeedbackBuffer(size: i32, type_: GLenum) -> Vec<f32> {
+pub fn FeedbackBuffer(size: i32, type_: GLenum, buffer: &mut [f32]) {
     unsafe {
-        let mut buffer = vec![];
         glu_sys::glFeedbackBuffer(size, type_, buffer.as_mut_ptr());
-        buffer
     }
 }
 
@@ -1613,11 +1555,9 @@ pub fn PassThrough(token: f32) {
     unsafe { glu_sys::glPassThrough(token) }
 }
 
-pub fn SelectBuffer(size: i32) -> Vec<u32> {
+pub fn SelectBuffer(size: i32, buffer: &mut [u32]) {
     unsafe {
-        let mut buffer = vec![];
         glu_sys::glSelectBuffer(size, buffer.as_mut_ptr());
-        buffer
     }
 }
 
@@ -1756,19 +1696,15 @@ pub fn GetColorTable(target: GLenum, format: u32, type_: GLenum, table: *mut raw
     unsafe { glu_sys::glGetColorTable(target, format, type_, table) }
 }
 
-pub fn GetColorTableParameterfv(target: GLenum, pname: GLenum) -> Vec<f32> {
+pub fn GetColorTableParameterfv(target: GLenum, pname: GLenum, params: &mut [f32]) {
     unsafe {
-        let mut params = vec![];
         glu_sys::glGetColorTableParameterfv(target, pname, params.as_mut_ptr());
-        params
     }
 }
 
-pub fn GetColorTableParameteriv(target: GLenum, pname: GLenum) -> Vec<i32> {
+pub fn GetColorTableParameteriv(target: GLenum, pname: GLenum, params: &mut [i32]) {
     unsafe {
-        let mut params = vec![];
         glu_sys::glGetColorTableParameteriv(target, pname, params.as_mut_ptr());
-        params
     }
 }
 
@@ -1798,19 +1734,15 @@ pub fn GetHistogram(
     unsafe { glu_sys::glGetHistogram(target, reset as u8, format, type_, values) }
 }
 
-pub fn GetHistogramParameterfv(target: GLenum, pname: GLenum) -> Vec<f32> {
+pub fn GetHistogramParameterfv(target: GLenum, pname: GLenum, params: &mut [f32]){
     unsafe {
-        let mut params = vec![];
         glu_sys::glGetHistogramParameterfv(target, pname, params.as_mut_ptr());
-        params
     }
 }
 
-pub fn GetHistogramParameteriv(target: GLenum, pname: GLenum) -> Vec<i32> {
+pub fn GetHistogramParameteriv(target: GLenum, pname: GLenum, params: &mut [i32]) {
     unsafe {
-        let mut params = vec![];
         glu_sys::glGetHistogramParameteriv(target, pname, params.as_mut_ptr());
-        params
     }
 }
 
@@ -1826,19 +1758,15 @@ pub fn GetMinmax(target: GLenum, reset: bool, format: u32, types: u32, values: *
     unsafe { glu_sys::glGetMinmax(target, reset as u8, format, types, values) }
 }
 
-pub fn GetMinmaxParameterfv(target: GLenum, pname: GLenum) -> Vec<f32> {
+pub fn GetMinmaxParameterfv(target: GLenum, pname: GLenum, params: &mut [f32]) {
     unsafe {
-        let mut params = vec![];
         glu_sys::glGetMinmaxParameterfv(target, pname, params.as_mut_ptr());
-        params
     }
 }
 
-pub fn GetMinmaxParameteriv(target: GLenum, pname: GLenum) -> Vec<i32> {
+pub fn GetMinmaxParameteriv(target: GLenum, pname: GLenum, params: &mut [i32]) {
     unsafe {
-        let mut params = vec![];
         glu_sys::glGetMinmaxParameteriv(target, pname, params.as_mut_ptr());
-        params
     }
 }
 
@@ -1908,19 +1836,15 @@ pub fn GetConvolutionFilter(target: GLenum, format: u32, type_: GLenum, image: *
     unsafe { glu_sys::glGetConvolutionFilter(target, format, type_, image) }
 }
 
-pub fn GetConvolutionParameterfv(target: GLenum, pname: GLenum) -> Vec<f32> {
+pub fn GetConvolutionParameterfv(target: GLenum, pname: GLenum, params: &mut [f32]) {
     unsafe {
-        let mut params = vec![];
         glu_sys::glGetConvolutionParameterfv(target, pname, params.as_mut_ptr());
-        params
     }
 }
 
-pub fn GetConvolutionParameteriv(target: GLenum, pname: GLenum) -> Vec<i32> {
+pub fn GetConvolutionParameteriv(target: GLenum, pname: GLenum, params: &mut [i32]) {
     unsafe {
-        let mut params = vec![];
         glu_sys::glGetConvolutionParameteriv(target, pname, params.as_mut_ptr());
-        params
     }
 }
 

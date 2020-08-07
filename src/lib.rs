@@ -6,7 +6,7 @@
 
 mod gl;
 mod glu;
-mod raw;
+mod consts;
 
 #[cfg(test)]
 mod tests {
