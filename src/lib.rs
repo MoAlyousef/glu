@@ -4,9 +4,9 @@
 #![allow(non_snake_case)]
 #![allow(unused_unsafe)]
 
-mod gl;
-mod glu;
-mod consts;
+pub mod gl;
+pub mod glu;
+pub mod consts;
 
 #[cfg(test)]
 mod tests {
